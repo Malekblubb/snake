@@ -36,7 +36,7 @@ namespace snk
 			{
 				m_window.clear();
 				this->update_events();
-				this->update_drawables();
+				this->render();
 				m_window.display();
 			}
 
@@ -64,7 +64,7 @@ namespace snk
 					}
 		}
 
-		void update_drawables() noexcept
+		void render() noexcept
 		{
 			if(!this->is_paused())
 				m_snake_player.update();
