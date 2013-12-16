@@ -7,8 +7,12 @@
 #define SNK_GAME_HPP
 
 
+#include "debug_text.hpp"
 #include "fruit_handler.hpp"
 #include "snake.hpp"
+
+#include <mlk/time/time.h>
+#include <mlk/tools/stl_string_utl.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -21,9 +25,11 @@ namespace snk
 
 		snake m_snake_player;
 		fruit_handler m_fh;
+		debug_text m_debug_text{"consola.ttf"};
 
 		bool m_running{false};
 		bool m_paused{false};
+		bool m_debug{false};
 
 	public:
 		game(const sf::VideoMode& size, const std::string& title) :
@@ -36,11 +42,16 @@ namespace snk
 			m_running = true;
 			while(m_running)
 			{
-				m_window.clear();
+				auto start(mlk::tm::time_pnt());
+
 				this->update_events();
 				this->update_game();
 				this->render();
-				m_window.display();
+
+				auto end(mlk::tm::time_pnt());
+				auto duration(mlk::tm::duration_as<float>(start, end));
+				m_debug_text.set_text("Update duration: " + mlk::stl_string::to_string(duration) +
+									  "\nFPS: " + mlk::stl_string::to_string(1.f / (duration / 1000.f)));
 			}
 			return 0;
 		}
@@ -62,6 +73,7 @@ namespace snk
 					case sf::Keyboard::Escape: this->stop(); break;
 					case sf::Keyboard::Space:
 					case sf::Keyboard::P: m_paused = !m_paused; break;
+					case sf::Keyboard::D: m_debug = !m_debug; break;
 					default: break;
 					}
 		}
@@ -78,11 +90,18 @@ namespace snk
 
 		void render() noexcept
 		{
+			m_window.clear();
+
 			for(const auto& body_part : m_snake_player.body())
 				m_window.draw(body_part);
 
 			for(const auto& fruit : m_fh.fruits())
 				m_window.draw(fruit);
+
+			if(m_debug)
+				m_window.draw(m_debug_text.drawable());
+
+			m_window.display();
 		}
 	};
 }
