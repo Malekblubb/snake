@@ -35,7 +35,7 @@ namespace snk
 		game(const sf::VideoMode& size, const std::string& title) :
 			m_window{size, title},
 			m_snake_player{{size.width / 2.f, size.height / 2.f}}
-		{ }
+		{m_snake_player.m_on_self_hit = [this]{this->stop();};}
 
 		int run()
 		{

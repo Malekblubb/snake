@@ -7,10 +7,13 @@
 #define SNK_SNAKE_HPP
 
 
+#include <mlk/containers/container_utl.h>
 #include <mlk/time/time.h>
 #include <mlk/types/types.h>
 
 #include <SFML/Graphics.hpp>
+
+#include <functional>
 
 
 namespace snk
@@ -26,6 +29,8 @@ namespace snk
 		mlk::hrs_time_pnt m_last_move{mlk::tm::time_pnt()};
 
 	public:
+		std::function<void()> m_on_self_hit;
+
 		snake(const sf::Vector2f& pos)
 		{
 			m_drawables.emplace_back(sf::RectangleShape{{m_snake_size, m_snake_size}});
@@ -74,19 +79,30 @@ namespace snk
 				last_pos = pre_pos;
 			}
 
+			this->check_self_hit();
+
 			m_last_move = mlk::tm::time_pnt();
 		}
 
 		void reset_velo() noexcept
 		{m_velo = {0, 0};}
 
-		auto head() noexcept
+		auto head() const noexcept
 		-> decltype((m_drawables.front()))
 		{return m_drawables.front();}
 
 		auto last_body_part() noexcept
 		-> decltype((m_drawables.back()))
 		{return m_drawables.back();}
+
+		void check_self_hit() const noexcept
+		{
+			for(auto iter(m_drawables.begin() + 1); iter != m_drawables.end(); ++iter)
+			{
+				if(iter->getPosition() == this->head().getPosition())
+					m_on_self_hit();
+			}
+		}
 	};
 }
 
