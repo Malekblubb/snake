@@ -57,24 +57,24 @@ namespace snk
 	private:
 		void try_move() noexcept
 		{
-			if(mlk::tm::timed_out(m_last_move, m_snake_move_interval))
+			if(!mlk::tm::timed_out(m_last_move, m_snake_move_interval))
+				return;
+
+			// get head pos before move
+			auto last_pos(this->head().getPosition());
+
+			// move head
+			m_drawables[0].move(m_velo);
+
+			// move body
+			for(auto iter(m_drawables.begin() + 1); iter != m_drawables.end(); ++iter)
 			{
-				// get head pos before move
-				auto last_pos(this->head().getPosition());
-
-				// move head
-				m_drawables[0].move(m_velo);
-
-				// move body
-				for(auto iter(m_drawables.begin() + 1); iter != m_drawables.end(); ++iter)
-				{
-					auto pre_pos(iter->getPosition());
-					iter->setPosition(last_pos);
-					last_pos = pre_pos;
-				}
-
-				m_last_move = mlk::tm::time_pnt();
+				auto pre_pos(iter->getPosition());
+				iter->setPosition(last_pos);
+				last_pos = pre_pos;
 			}
+
+			m_last_move = mlk::tm::time_pnt();
 		}
 
 		void reset_velo() noexcept
