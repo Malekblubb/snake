@@ -7,6 +7,7 @@
 #define SNK_GAME_HPP
 
 
+#include "fruit_handler.hpp"
 #include "snake.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -19,6 +20,7 @@ namespace snk
 		sf::RenderWindow m_window;
 
 		snake m_snake_player;
+		fruit_handler m_fh;
 
 		bool m_running{false};
 		bool m_paused{false};
@@ -36,10 +38,10 @@ namespace snk
 			{
 				m_window.clear();
 				this->update_events();
+				this->update_game();
 				this->render();
 				m_window.display();
 			}
-
 			return 0;
 		}
 
@@ -64,13 +66,23 @@ namespace snk
 					}
 		}
 
+		void update_game()
+		{
+			if(this->is_paused()) return;
+
+			m_snake_player.update();
+			m_fh.update();
+			if(m_fh.check_collision(m_snake_player.body().at(0)))
+				m_snake_player.add_body_part();
+		}
+
 		void render() noexcept
 		{
-			if(!this->is_paused())
-				m_snake_player.update();
-
 			for(const auto& body_part : m_snake_player.body())
 				m_window.draw(body_part);
+
+			for(const auto& fruit : m_fh.fruits())
+				m_window.draw(fruit);
 		}
 	};
 }
