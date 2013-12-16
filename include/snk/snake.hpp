@@ -47,7 +47,7 @@ namespace snk
 		{
 			auto l_pos(this->last_body_part().getPosition());
 			m_drawables.emplace_back(sf::RectangleShape{{m_snake_size, m_snake_size}});
-			m_drawables.back().setPosition({l_pos.x, l_pos.y});
+			m_drawables.back().setPosition(l_pos);
 		}
 
 		auto body() const noexcept
