@@ -18,7 +18,6 @@ namespace snk
 
 	class menu
 	{
-		difficulty_modes m_difficulty{difficulty_modes::none};
 		debug_text m_title{"consola.ttf"};
 		bool m_is_active{true};
 
