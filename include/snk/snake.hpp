@@ -7,7 +7,6 @@
 #define SNK_SNAKE_HPP
 
 
-#include <mlk/containers/container_utl.h>
 #include <mlk/time/time.h>
 #include <mlk/types/types.h>
 
