@@ -21,7 +21,7 @@ namespace snk
 {
 	class fruit_handler
 	{
-		static constexpr mlk::ullong m_interval{2000};
+		mlk::ullong m_interval{2000};
 
 		std::vector<sf::RectangleShape> m_fruits;
 		mlk::hrs_time_pnt m_last_added{mlk::tm::time_pnt()};
@@ -31,6 +31,9 @@ namespace snk
 
 		void update()
 		{this->try_generate_fruit();}
+
+		void set_spawn_interval(mlk::ullong interval) noexcept
+		{m_interval = interval;}
 
 		bool check_collision(const sf::RectangleShape& o)
 		{
