@@ -22,7 +22,7 @@ namespace snk
 	{
 		static constexpr float m_snake_size{10.f};
 		static constexpr float m_snake_velo{10.f};
-		static constexpr mlk::ullong m_snake_move_interval{50};
+		mlk::ullong m_snake_move_interval{50};
 
 		std::vector<sf::RectangleShape> m_drawables;
 		sf::Vector2f m_velo;
@@ -47,6 +47,9 @@ namespace snk
 			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {this->reset_velo(); m_velo.x = -m_snake_velo;}
 			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {this->reset_velo(); m_velo.x = m_snake_velo;}
 		}
+
+		void set_move_interval(mlk::ullong interval) noexcept
+		{m_snake_move_interval = interval;}
 
 		void add_body_part()
 		{
