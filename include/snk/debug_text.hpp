@@ -27,7 +27,10 @@ namespace snk
 		void set_text(const std::string& text) noexcept
 		{m_text.setString(text);}
 
-		auto drawable()
+		void set_position(const sf::Vector2f& pos) noexcept
+		{m_text.setPosition(pos);}
+
+		auto drawable() const noexcept
 		-> decltype((m_text))
 		{return m_text;}
 	};
