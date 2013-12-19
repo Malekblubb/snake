@@ -7,9 +7,6 @@
 #define SNK_SNAKE_HPP
 
 
-#include <mlk/time/time.h>
-#include <mlk/types/types.h>
-
 #include <SFML/Graphics.hpp>
 
 #include <functional>
@@ -21,11 +18,10 @@ namespace snk
 	{
 		static constexpr float m_snake_size{10.f};
 		static constexpr float m_snake_velo{10.f};
-		mlk::ullong m_snake_move_interval{50};
+		float m_snake_speed{0.7f};
 
 		std::vector<sf::RectangleShape> m_drawables;
-		sf::Vector2f m_velo;
-		mlk::hrs_time_pnt m_last_move{mlk::tm::time_pnt()};
+		sf::Vector2f m_velo{0.f, 0.f};
 
 	public:
 		std::function<void()> m_on_self_hit;
@@ -47,8 +43,8 @@ namespace snk
 			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {this->reset_velo(); m_velo.x = m_snake_velo;}
 		}
 
-		void set_move_interval(mlk::ullong interval) noexcept
-		{m_snake_move_interval = interval;}
+		void set_speed(float speed) noexcept
+		{m_snake_speed = speed;}
 
 		void add_body_part()
 		{
@@ -64,14 +60,11 @@ namespace snk
 	private:
 		void try_move() noexcept
 		{
-			if(!mlk::tm::timed_out(m_last_move, m_snake_move_interval))
-				return;
-
 			// get head pos before move
 			auto last_pos(this->head().getPosition());
 
 			// move head
-			m_drawables[0].move(m_velo);
+			m_drawables[0].move(m_velo * m_snake_speed);
 
 			// move body
 			for(auto iter(m_drawables.begin() + 1); iter != m_drawables.end(); ++iter)
@@ -82,8 +75,6 @@ namespace snk
 			}
 
 			this->check_self_hit();
-
-			m_last_move = mlk::tm::time_pnt();
 		}
 
 		void reset_velo() noexcept

@@ -22,10 +22,10 @@ namespace snk
 {
 	struct difficulty_values
 	{
-		static constexpr mlk::ullong m_easy_move_interval{100};
+		static constexpr float m_easy_speed{0.4f};
 		static constexpr mlk::ullong m_easy_spawn_interval{5000};
 
-		static constexpr mlk::ullong m_hard_move_interval{10};
+		static constexpr float m_hard_speed{1.4f};
 		static constexpr mlk::ullong m_hard_spawn_interval{500};
 	};
 
@@ -80,12 +80,12 @@ namespace snk
 			switch (mode)
 			{
 			case difficulty_modes::easy:
-				m_snake_player.set_move_interval(difficulty_values::m_easy_move_interval);
+				m_snake_player.set_speed(difficulty_values::m_easy_speed);
 				m_fh.set_spawn_interval(difficulty_values::m_easy_spawn_interval);
 				break;
 			case difficulty_modes::normal: break;
 			case difficulty_modes::hard:
-				m_snake_player.set_move_interval(difficulty_values::m_hard_move_interval);
+				m_snake_player.set_speed(difficulty_values::m_hard_speed);
 				m_fh.set_spawn_interval(difficulty_values::m_hard_spawn_interval);
 			default:
 				break;
