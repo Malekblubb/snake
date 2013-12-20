@@ -9,7 +9,4 @@
 constexpr mlk::uint height{600}, width{600};
 
 int main()
-{
-	snk::game g{{width, height}, "Snake"};
-	return g.run();
-}
+{return snk::game{{width, height}, "Snake"}.run();}
