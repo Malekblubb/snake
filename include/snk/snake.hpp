@@ -33,14 +33,14 @@ namespace snk
 			m_drawables[0].setFillColor({0, 255, 0});
 		}
 
-		void update()
+		void update(ud dur)
 		{
-			this->try_move();
+			this->try_move(dur);
 
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {this->reset_velo(); m_velo.y = -m_snake_velo;}
-			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {this->reset_velo(); m_velo.y = m_snake_velo;}
-			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {this->reset_velo(); m_velo.x = -m_snake_velo;}
-			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {this->reset_velo(); m_velo.x = m_snake_velo;}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {m_velo = {0.f, -m_snake_velo};}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {m_velo = {0.f, m_snake_velo};}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {m_velo = {-m_snake_velo, 0.f};}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {m_velo = {m_snake_velo, 0.f};}
 		}
 
 		void set_speed(float speed) noexcept
@@ -76,9 +76,6 @@ namespace snk
 
 			this->check_self_hit();
 		}
-
-		void reset_velo() noexcept
-		{m_velo = {0, 0};}
 
 		auto head() const noexcept
 		-> decltype((m_drawables.front()))
